@@ -283,10 +283,12 @@ function ScrollScene({
   id,
   panel,
   drift = "left",
+  density = "standard",
 }: {
   id: string;
   panel: ReactNode;
   drift?: "left" | "right";
+  density?: "standard" | "compact" | "short";
 }) {
   const ref = useRef<HTMLElement | null>(null);
   const reducedMotion = useReducedMotion();
@@ -297,18 +299,18 @@ function ScrollScene({
 
   const opacity = useTransform(
     scrollYProgress,
-    [0, 0.12, 0.28, 0.72, 0.88, 1],
-    [0, 0.35, 1, 1, 0.35, 0],
+    [0, 0.08, 0.22, 0.78, 0.92, 1],
+    [0, 0.45, 1, 1, 0.45, 0],
   );
-  const y = useTransform(scrollYProgress, [0, 0.18, 0.5, 0.82, 1], [90, 24, 0, -26, -90]);
+  const y = useTransform(scrollYProgress, [0, 0.16, 0.5, 0.84, 1], [72, 18, 0, -18, -72]);
   const xOffset = drift === "right" ? 42 : -42;
-  const x = useTransform(scrollYProgress, [0, 0.2, 0.5, 0.82, 1], [xOffset, 10, 0, -10, -xOffset]);
-  const scale = useTransform(scrollYProgress, [0, 0.22, 0.5, 0.82, 1], [0.96, 0.985, 1, 0.985, 0.96]);
-  const rotateX = useTransform(scrollYProgress, [0, 0.2, 0.5, 0.82, 1], [8, 2, 0, -2, -8]);
+  const x = useTransform(scrollYProgress, [0, 0.18, 0.5, 0.84, 1], [xOffset, 8, 0, -8, -xOffset]);
+  const scale = useTransform(scrollYProgress, [0, 0.2, 0.5, 0.84, 1], [0.975, 0.99, 1, 0.99, 0.975]);
+  const rotateX = useTransform(scrollYProgress, [0, 0.2, 0.5, 0.84, 1], [5, 1.5, 0, -1.5, -5]);
   const rotateY = useTransform(
     scrollYProgress,
-    [0, 0.2, 0.5, 0.82, 1],
-    drift === "right" ? [-7, -2, 0, 2, 7] : [7, 2, 0, -2, -7],
+    [0, 0.2, 0.5, 0.84, 1],
+    drift === "right" ? [-4, -1.5, 0, 1.5, 4] : [4, 1.5, 0, -1.5, -4],
   );
   const clipPath = useTransform(
     scrollYProgress,
@@ -323,7 +325,7 @@ function ScrollScene({
   );
 
   return (
-    <section id={id} ref={ref} className="scene">
+    <section id={id} ref={ref} className={`scene scene--${density}`}>
       <motion.div
         className="scene__frame"
         style={reducedMotion ? undefined : { opacity, x, y, scale, rotateX, rotateY, clipPath }}
@@ -489,6 +491,7 @@ function App() {
         <ScrollScene
           id="services"
           drift="left"
+          density="standard"
           panel={
             <Panel
               tag="Services"
@@ -561,6 +564,7 @@ function App() {
         <ScrollScene
           id="cannabis"
           drift="right"
+          density="compact"
           panel={
             <Panel
               tag="Medical cannabis"
@@ -633,6 +637,7 @@ function App() {
         <ScrollScene
           id="info"
           drift="left"
+          density="compact"
           panel={
             <Panel
               tag="Medical information"
@@ -663,6 +668,7 @@ function App() {
         <ScrollScene
           id="journey"
           drift="right"
+          density="compact"
           panel={
             <Panel
               tag="How it works"
@@ -692,6 +698,7 @@ function App() {
         <ScrollScene
           id="contact"
           drift="left"
+          density="short"
           panel={
             <Panel
               tag="Trust, access and FAQs"

@@ -670,25 +670,33 @@ main.story-flow {
   border-radius: var(--radius-2xl);
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(246, 250, 252, 0.94));
   box-shadow:
-    0 28px 56px rgba(17, 60, 91, 0.075),
+    0 24px 52px rgba(17, 60, 91, 0.055),
     0 1px 0 rgba(255, 255, 255, 0.9) inset;
 }
 
 .scene {
   position: relative;
-  min-height: 136vh;
+  min-height: 122vh;
   scroll-snap-align: start;
   perspective: 2200px;
 }
 
-.scene:last-of-type {
-  min-height: 112vh;
+.scene + .scene {
+  margin-top: -4vh;
+}
+
+.scene--compact {
+  min-height: 108vh;
+}
+
+.scene--short {
+  min-height: 92vh;
 }
 
 .scene__frame {
   position: sticky;
-  top: 5.9rem;
-  padding: 0.1rem 0 1rem;
+  top: 5.45rem;
+  padding: 0.1rem 0 0.75rem;
   transform-origin: center top;
   will-change: transform, opacity, clip-path;
   transform-style: preserve-3d;
@@ -742,7 +750,7 @@ main.story-flow {
     linear-gradient(135deg, rgba(220, 235, 250, 0.48), transparent 48%),
     rgba(255, 255, 255, 0.92);
   box-shadow:
-    0 20px 42px rgba(17, 60, 91, 0.065),
+    0 16px 36px rgba(17, 60, 91, 0.05),
     0 1px 0 rgba(255, 255, 255, 0.9) inset;
 }
 
@@ -802,7 +810,7 @@ main.story-flow {
     linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(246, 250, 252, 0.9));
   box-shadow: var(--shadow);
   box-shadow:
-    0 18px 40px rgba(17, 60, 91, 0.06),
+    0 14px 32px rgba(17, 60, 91, 0.045),
     0 1px 0 rgba(255, 255, 255, 0.88) inset;
 }
 
@@ -854,7 +862,7 @@ main.story-flow {
   border-radius: 24px 20px 22px 26px;
   background: rgba(255, 255, 255, 0.84);
   box-shadow:
-    0 12px 24px rgba(17, 60, 91, 0.045),
+    0 10px 20px rgba(17, 60, 91, 0.035),
     0 1px 0 rgba(255, 255, 255, 0.9) inset;
   transition:
     transform 220ms ease,
@@ -876,7 +884,7 @@ main.story-flow {
   transform: translateY(-4px) rotate(0deg);
   border-color: rgba(0, 94, 184, 0.12);
   box-shadow:
-    0 18px 30px rgba(17, 60, 91, 0.07),
+    0 14px 24px rgba(17, 60, 91, 0.05),
     0 1px 0 rgba(255, 255, 255, 0.9) inset;
 }
 
@@ -972,7 +980,7 @@ main.story-flow {
   padding: 1.45rem;
   overflow: hidden;
   box-shadow:
-    0 18px 38px rgba(17, 60, 91, 0.06),
+    0 14px 30px rgba(17, 60, 91, 0.045),
     0 1px 0 rgba(255, 255, 255, 0.88) inset;
 }
 
@@ -1001,7 +1009,7 @@ main.story-flow {
   padding: 1.35rem;
   overflow: hidden;
   box-shadow:
-    0 18px 36px rgba(17, 60, 91, 0.055),
+    0 14px 28px rgba(17, 60, 91, 0.04),
     0 1px 0 rgba(255, 255, 255, 0.88) inset;
 }
 
@@ -1053,7 +1061,7 @@ main.story-flow {
   z-index: 1;
   overflow: hidden;
   box-shadow:
-    0 16px 30px rgba(17, 60, 91, 0.055),
+    0 12px 24px rgba(17, 60, 91, 0.04),
     0 1px 0 rgba(255, 255, 255, 0.88) inset;
 }
 
@@ -1076,7 +1084,7 @@ main.story-flow {
   border-radius: 30px 24px 34px 22px;
   overflow: hidden;
   box-shadow:
-    0 18px 36px rgba(17, 60, 91, 0.06),
+    0 14px 28px rgba(17, 60, 91, 0.045),
     0 1px 0 rgba(255, 255, 255, 0.9) inset;
 }
 
@@ -1103,7 +1111,7 @@ main.story-flow {
   overflow: hidden;
   border-radius: 24px 30px 22px 28px;
   box-shadow:
-    0 14px 28px rgba(17, 60, 91, 0.05),
+    0 10px 20px rgba(17, 60, 91, 0.035),
     0 1px 0 rgba(255, 255, 255, 0.88) inset;
 }
 
@@ -1155,11 +1163,19 @@ main.story-flow {
   }
 
   .scene {
-    min-height: 118vh;
+    min-height: 110vh;
   }
 
-  .scene:last-of-type {
-    min-height: 104vh;
+  .scene + .scene {
+    margin-top: -2vh;
+  }
+
+  .scene--compact {
+    min-height: 100vh;
+  }
+
+  .scene--short {
+    min-height: 88vh;
   }
 
   .service-lane {
@@ -1210,6 +1226,10 @@ main.story-flow {
 
   .scene {
     min-height: auto;
+  }
+
+  .scene + .scene {
+    margin-top: 0;
   }
 
   .scene__frame {

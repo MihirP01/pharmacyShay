@@ -81,9 +81,11 @@ const heroStats: HeroStat[] = [
 
 const heroCapsules = [
   "Repeat prescriptions",
-  "Travel vaccines",
+  "Vaccines & travel",
   "Blood testing",
   "THC/CBD clinics",
+  "Delivery support",
+  "Health guidance",
 ];
 
 const serviceCards: ServiceCard[] = [
@@ -447,89 +449,100 @@ function App() {
       <main id="top" className="story-flow">
         <section ref={heroRef} className="hero">
           <FloatingBackground one={auraOneY} two={auraTwoY} />
-          <div className="hero-grid">
-            <motion.div className="hero-copy" style={{ y: heroCopyY }}>
-              <SectionTag>UK pharmacy, wellness and medical guidance</SectionTag>
-              <p className="hero-kicker">
-                Measured spacing, calm motion and a clearer route into care.
-              </p>
-              <h1>Care that feels considered from the first glance.</h1>
-              <p className="hero-copy__lead">
-                Shaylen Pharmacy brings together NHS and private prescription support,
-                consultations, vaccines, blood testing, delivery, everyday health advice and
-                regulated medical cannabis care in a digital experience designed to feel calm,
-                precise and easy to trust.
-              </p>
-              <div className="hero-actions">
-                <a className="button button--primary" href="#services">
-                  Explore services
-                </a>
-                <a className="button button--ghost" href="#cannabis">
-                  Understand cannabis care
-                </a>
-              </div>
-              <p className="hero-account-note">
-                Sign in / sign up is ready as a future patient account entry point for
-                prescriptions, repeats and secure personal details.
-              </p>
-              <ul className="hero-list">
-                {heroHighlights.map((highlight) => (
-                  <li key={highlight}>{highlight}</li>
-                ))}
-              </ul>
-            </motion.div>
-
-            <motion.div
-              className="hero-stage"
-              style={{ y: heroCardsY, scale: heroCardsScale }}
-            >
-              <div className="hero-stage__panel">
-                <div className="hero-stage__eyebrow">
-                  <span>Measured pharmacy care</span>
-                  <span>Clinic + delivery</span>
+          <div className="hero-shell">
+            <div className="hero-shell__glow hero-shell__glow--one" />
+            <div className="hero-shell__glow hero-shell__glow--two" />
+            <div className="hero-grid">
+              <motion.div className="hero-copy" style={{ y: heroCopyY }}>
+                <SectionTag>UK pharmacy, wellness and medical guidance</SectionTag>
+                <p className="hero-kicker">
+                  A calmer opening moment for prescriptions, prevention and specialist care.
+                </p>
+                <h1>
+                  A composed front door for
+                  <span className="hero-copy__accent">
+                    {" "}
+                    medicines, advice and higher-touch support.
+                  </span>
+                </h1>
+                <p className="hero-copy__lead">
+                  Shaylen Pharmacy brings together NHS and private prescription support,
+                  consultations, vaccines, blood testing, delivery and regulated medical cannabis
+                  care in a homepage that feels clearer, warmer and easier to trust.
+                </p>
+                <div className="hero-actions">
+                  <a className="button button--primary" href="#services">
+                    Explore services
+                  </a>
+                  <a className="button button--ghost" href="#cannabis">
+                    Understand cannabis care
+                  </a>
                 </div>
-                <div className="hero-stage__note">
-                  <span>What should feel obvious</span>
-                  <p>
-                    Where to start, what is available and which next step makes sense should all
-                    feel clear within seconds.
-                  </p>
-                </div>
-                <div className="hero-stage__stats">
+                <div className="hero-value-grid">
                   {heroStats.map((stat) => (
-                    <article key={stat.value}>
+                    <article key={stat.value} className="hero-value-card">
                       <strong>{stat.value}</strong>
-                      <span>{stat.label}</span>
+                      <p>{stat.label}</p>
                     </article>
                   ))}
                 </div>
-                <div className="hero-stage__capsules">
-                  {heroCapsules.map((item) => (
-                    <span key={item}>{item}</span>
-                  ))}
+                <p className="hero-account-note">
+                  Sign in / sign up is ready as a future patient account entry point for
+                  prescriptions, repeats and secure personal details.
+                </p>
+              </motion.div>
+
+              <motion.div
+                className="hero-stage"
+                style={{ y: heroCardsY, scale: heroCardsScale }}
+              >
+                <div className="hero-showcase">
+                  <div className="hero-spotlight">
+                    <div className="hero-spotlight__bar">
+                      <span>Trusted routes into care</span>
+                      <span>Clinic + delivery</span>
+                    </div>
+                    <div className="hero-spotlight__ring">
+                      <div className="hero-spotlight__core">
+                        <strong>NHS + private</strong>
+                        <span>one calm route into prescriptions, advice and follow-up support</span>
+                      </div>
+                    </div>
+                    <div className="hero-spotlight__list">
+                      {heroHighlights.map((highlight) => (
+                        <div key={highlight} className="hero-spotlight__item">
+                          <span className="hero-spotlight__dot" />
+                          <p>{highlight}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="hero-stack">
+                    {floatingCards.map((card, index) => (
+                      <motion.article
+                        key={card.title}
+                        className="hero-stack-card"
+                        initial={{ opacity: 0, y: 18 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, amount: 0.35 }}
+                        transition={{
+                          delay: 0.18 + index * 0.08,
+                          duration: reducedMotion ? 0.2 : 0.55,
+                          ease: [0.22, 1, 0.36, 1],
+                        }}
+                      >
+                        <span className="hero-stack-card__index">0{index + 1}</span>
+                        <div>
+                          <strong>{card.title}</strong>
+                          <p>{card.body}</p>
+                        </div>
+                      </motion.article>
+                    ))}
+                  </div>
                 </div>
-              </div>
-              <div className="hero-stage__float-grid">
-                {floatingCards.map((card, index) => (
-                  <motion.article
-                    key={card.title}
-                    className={`floating-card floating-card--${index + 1}`}
-                    initial={{ opacity: 0, y: 18 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.35 }}
-                    transition={{
-                      delay: 0.18 + index * 0.08,
-                      duration: reducedMotion ? 0.2 : 0.55,
-                      ease: [0.22, 1, 0.36, 1],
-                    }}
-                  >
-                    <span className="floating-card__eyebrow">0{index + 1}</span>
-                    <strong>{card.title}</strong>
-                    <p>{card.body}</p>
-                  </motion.article>
-                ))}
-              </div>
-            </motion.div>
+              </motion.div>
+            </div>
           </div>
           <motion.div
             className="hero-ribbon"
@@ -538,12 +551,9 @@ function App() {
             viewport={{ once: true, amount: 0.6 }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           >
-            <span>Prescriptions</span>
-            <span>Vaccines</span>
-            <span>Blood tests</span>
-            <span>Medical cannabis</span>
-            <span>Delivery & aftercare</span>
-            <span>Health guidance</span>
+            {heroCapsules.map((item) => (
+              <span key={item}>{item}</span>
+            ))}
           </motion.div>
         </section>
 

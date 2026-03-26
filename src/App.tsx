@@ -78,6 +78,13 @@ const heroStats: HeroStat[] = [
   },
 ];
 
+const heroCapsules = [
+  "Repeat prescriptions",
+  "Travel vaccines",
+  "Blood testing",
+  "THC/CBD clinics",
+];
+
 const serviceCards: ServiceCard[] = [
   {
     code: "RX",
@@ -297,6 +304,12 @@ function ScrollScene({
   const xOffset = drift === "right" ? 42 : -42;
   const x = useTransform(scrollYProgress, [0, 0.2, 0.5, 0.82, 1], [xOffset, 10, 0, -10, -xOffset]);
   const scale = useTransform(scrollYProgress, [0, 0.22, 0.5, 0.82, 1], [0.96, 0.985, 1, 0.985, 0.96]);
+  const rotateX = useTransform(scrollYProgress, [0, 0.2, 0.5, 0.82, 1], [8, 2, 0, -2, -8]);
+  const rotateY = useTransform(
+    scrollYProgress,
+    [0, 0.2, 0.5, 0.82, 1],
+    drift === "right" ? [-7, -2, 0, 2, 7] : [7, 2, 0, -2, -7],
+  );
   const clipPath = useTransform(
     scrollYProgress,
     [0, 0.16, 0.5, 0.84, 1],
@@ -313,7 +326,7 @@ function ScrollScene({
     <section id={id} ref={ref} className="scene">
       <motion.div
         className="scene__frame"
-        style={reducedMotion ? undefined : { opacity, x, y, scale, clipPath }}
+        style={reducedMotion ? undefined : { opacity, x, y, scale, rotateX, rotateY, clipPath }}
       >
         {panel}
       </motion.div>
@@ -333,6 +346,8 @@ function App() {
   const auraTwoY = useTransform(scrollYProgress, [0, 1], [0, reducedMotion ? 0 : -80]);
   const heroCopyY = useTransform(scrollYProgress, [0, 1], [0, reducedMotion ? 0 : 60]);
   const heroCardsY = useTransform(scrollYProgress, [0, 1], [0, reducedMotion ? 0 : -40]);
+  const heroCardsRotate = useTransform(scrollYProgress, [0, 1], [0, reducedMotion ? 0 : -5]);
+  const heroCardsScale = useTransform(scrollYProgress, [0, 1], [1, reducedMotion ? 1 : 0.975]);
 
   return (
     <div className="site-shell">
@@ -368,13 +383,14 @@ function App() {
             <motion.div className="hero-copy" style={{ y: heroCopyY }}>
               <SectionTag>UK pharmacy, wellness and medical guidance</SectionTag>
               <p className="hero-kicker">
-                Designed around the clarity people expect from a modern UK pharmacy.
+                Built to reassure in the first few seconds, then guide people clearly.
               </p>
-              <h1>A calm, modern front door for prescriptions, advice and specialist care.</h1>
+              <h1>A pharmacy homepage that feels trustworthy before the details even begin.</h1>
               <p className="hero-copy__lead">
                 Shaylen Pharmacy brings together NHS and private prescription support,
                 consultations, vaccines, blood testing, delivery, everyday health advice and
-                regulated medical cannabis care so patients can find the right next step quickly.
+                regulated medical cannabis care in a calmer, clearer digital experience for UK
+                patients.
               </p>
               <div className="hero-actions">
                 <a className="button button--primary" href="#services">
@@ -395,17 +411,20 @@ function App() {
               </ul>
             </motion.div>
 
-            <motion.div className="hero-stage" style={{ y: heroCardsY }}>
+            <motion.div
+              className="hero-stage"
+              style={{ y: heroCardsY, rotate: heroCardsRotate, scale: heroCardsScale }}
+            >
               <div className="hero-stage__panel">
                 <div className="hero-stage__eyebrow">
-                  <span>UK pharmacy care</span>
+                  <span>First look matters</span>
                   <span>Clinic + delivery</span>
                 </div>
                 <div className="hero-stage__note">
-                  <span>What to expect</span>
+                  <span>What patients feel first</span>
                   <p>
-                    Clear advice, careful checks and a simple route into prescriptions,
-                    consultations and follow-up support.
+                    Clean structure, visible care pathways and enough warmth to feel human without
+                    losing clinical trust.
                   </p>
                 </div>
                 <div className="hero-stage__stats">
@@ -414,6 +433,11 @@ function App() {
                       <strong>{stat.value}</strong>
                       <span>{stat.label}</span>
                     </article>
+                  ))}
+                </div>
+                <div className="hero-stage__capsules">
+                  {heroCapsules.map((item) => (
+                    <span key={item}>{item}</span>
                   ))}
                 </div>
               </div>
@@ -480,9 +504,9 @@ function App() {
                   transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                 >
                   <p className="services-summary__lead">
-                    Choose the type of support you need today, whether that is collecting repeat
-                    medicines, arranging a consultation, staying ahead with prevention or exploring
-                    more specialist treatment pathways.
+                    The content now leads with immediate reassurance, then opens into clearer care
+                    lanes so people can move from first impression to useful action without losing
+                    trust.
                   </p>
                   <div className="services-pill-row">
                     <span>Urgent repeats</span>

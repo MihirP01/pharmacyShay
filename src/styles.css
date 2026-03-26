@@ -724,21 +724,25 @@ main.story-flow {
 
 .scene {
   position: relative;
-  min-height: 122vh;
+  min-height: 112vh;
   scroll-snap-align: start;
   perspective: 2200px;
 }
 
 .scene + .scene {
-  margin-top: -3vh;
+  margin-top: -8vh;
 }
 
 .scene--compact {
-  min-height: 108vh;
+  min-height: 96vh;
+}
+
+.scene--tight {
+  min-height: 84vh;
 }
 
 .scene--short {
-  min-height: 92vh;
+  min-height: 76vh;
 }
 
 .scene__frame {
@@ -1215,19 +1219,23 @@ main.story-flow {
   }
 
   .scene {
-    min-height: 110vh;
+    min-height: 98vh;
   }
 
   .scene + .scene {
-    margin-top: -1vh;
+    margin-top: -4vh;
   }
 
   .scene--compact {
-    min-height: 100vh;
+    min-height: 88vh;
+  }
+
+  .scene--tight {
+    min-height: 78vh;
   }
 
   .scene--short {
-    min-height: 88vh;
+    min-height: 70vh;
   }
 
   .service-lane {

@@ -289,7 +289,7 @@ function ScrollScene({
   id: string;
   panel: ReactNode;
   drift?: "left" | "right";
-  density?: "standard" | "compact" | "short";
+  density?: "standard" | "compact" | "tight" | "short";
 }) {
   const ref = useRef<HTMLElement | null>(null);
   const reducedMotion = useReducedMotion();
@@ -487,7 +487,7 @@ function App() {
         <ScrollScene
           id="services"
           drift="left"
-          density="standard"
+          density="compact"
           panel={
             <Panel
               tag="Services"
@@ -559,7 +559,7 @@ function App() {
         <ScrollScene
           id="cannabis"
           drift="right"
-          density="compact"
+          density="tight"
           panel={
             <Panel
               tag="Medical cannabis"
@@ -632,7 +632,7 @@ function App() {
         <ScrollScene
           id="info"
           drift="left"
-          density="compact"
+          density="tight"
           panel={
             <Panel
               tag="Medical information"
@@ -663,7 +663,7 @@ function App() {
         <ScrollScene
           id="journey"
           drift="right"
-          density="compact"
+          density="tight"
           panel={
             <Panel
               tag="How it works"

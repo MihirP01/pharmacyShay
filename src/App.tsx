@@ -306,12 +306,6 @@ function ScrollScene({
   const xOffset = drift === "right" ? 42 : -42;
   const x = useTransform(scrollYProgress, [0, 0.18, 0.5, 0.84, 1], [xOffset, 8, 0, -8, -xOffset]);
   const scale = useTransform(scrollYProgress, [0, 0.2, 0.5, 0.84, 1], [0.975, 0.99, 1, 0.99, 0.975]);
-  const rotateX = useTransform(scrollYProgress, [0, 0.2, 0.5, 0.84, 1], [5, 1.5, 0, -1.5, -5]);
-  const rotateY = useTransform(
-    scrollYProgress,
-    [0, 0.2, 0.5, 0.84, 1],
-    drift === "right" ? [-4, -1.5, 0, 1.5, 4] : [4, 1.5, 0, -1.5, -4],
-  );
   const clipPath = useTransform(
     scrollYProgress,
     [0, 0.16, 0.5, 0.84, 1],
@@ -328,7 +322,7 @@ function ScrollScene({
     <section id={id} ref={ref} className={`scene scene--${density}`}>
       <motion.div
         className="scene__frame"
-        style={reducedMotion ? undefined : { opacity, x, y, scale, rotateX, rotateY, clipPath }}
+        style={reducedMotion ? undefined : { opacity, x, y, scale, clipPath }}
       >
         {panel}
       </motion.div>
@@ -348,8 +342,7 @@ function App() {
   const auraTwoY = useTransform(scrollYProgress, [0, 1], [0, reducedMotion ? 0 : -80]);
   const heroCopyY = useTransform(scrollYProgress, [0, 1], [0, reducedMotion ? 0 : 60]);
   const heroCardsY = useTransform(scrollYProgress, [0, 1], [0, reducedMotion ? 0 : -40]);
-  const heroCardsRotate = useTransform(scrollYProgress, [0, 1], [0, reducedMotion ? 0 : -5]);
-  const heroCardsScale = useTransform(scrollYProgress, [0, 1], [1, reducedMotion ? 1 : 0.975]);
+  const heroCardsScale = useTransform(scrollYProgress, [0, 1], [1, reducedMotion ? 1 : 0.988]);
 
   return (
     <div className="site-shell">
@@ -385,14 +378,14 @@ function App() {
             <motion.div className="hero-copy" style={{ y: heroCopyY }}>
               <SectionTag>UK pharmacy, wellness and medical guidance</SectionTag>
               <p className="hero-kicker">
-                Built to reassure in the first few seconds, then guide people clearly.
+                Measured spacing, calm motion and a clearer route into care.
               </p>
-              <h1>A pharmacy homepage that feels trustworthy before the details even begin.</h1>
+              <h1>Care that feels considered from the first glance.</h1>
               <p className="hero-copy__lead">
                 Shaylen Pharmacy brings together NHS and private prescription support,
                 consultations, vaccines, blood testing, delivery, everyday health advice and
-                regulated medical cannabis care in a calmer, clearer digital experience for UK
-                patients.
+                regulated medical cannabis care in a digital experience designed to feel calm,
+                precise and easy to trust.
               </p>
               <div className="hero-actions">
                 <a className="button button--primary" href="#services">
@@ -415,18 +408,18 @@ function App() {
 
             <motion.div
               className="hero-stage"
-              style={{ y: heroCardsY, rotate: heroCardsRotate, scale: heroCardsScale }}
+              style={{ y: heroCardsY, scale: heroCardsScale }}
             >
               <div className="hero-stage__panel">
                 <div className="hero-stage__eyebrow">
-                  <span>First look matters</span>
+                  <span>Measured pharmacy care</span>
                   <span>Clinic + delivery</span>
                 </div>
                 <div className="hero-stage__note">
-                  <span>What patients feel first</span>
+                  <span>What should feel obvious</span>
                   <p>
-                    Clean structure, visible care pathways and enough warmth to feel human without
-                    losing clinical trust.
+                    Where to start, what is available and which next step makes sense should all
+                    feel clear within seconds.
                   </p>
                 </div>
                 <div className="hero-stage__stats">
@@ -449,22 +442,15 @@ function App() {
                     key={card.title}
                     className={`floating-card floating-card--${index + 1}`}
                     initial={{ opacity: 0, y: 18 }}
-                    animate={
-                      reducedMotion
-                        ? { opacity: 1, y: 0 }
-                        : {
-                            opacity: 1,
-                            y: [0, -10, 0],
-                            rotate: index % 2 === 0 ? [-1.2, 1.2, -1.2] : [1.2, -1.2, 1.2],
-                          }
-                    }
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.35 }}
                     transition={{
-                      delay: 0.2 + index * 0.12,
-                      duration: 6 + index,
-                      repeat: reducedMotion ? 0 : Infinity,
-                      ease: "easeInOut",
+                      delay: 0.18 + index * 0.08,
+                      duration: reducedMotion ? 0.2 : 0.55,
+                      ease: [0.22, 1, 0.36, 1],
                     }}
                   >
+                    <span className="floating-card__eyebrow">0{index + 1}</span>
                     <strong>{card.title}</strong>
                     <p>{card.body}</p>
                   </motion.article>
@@ -507,9 +493,8 @@ function App() {
                   transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                 >
                   <p className="services-summary__lead">
-                    The content now leads with immediate reassurance, then opens into clearer care
-                    lanes so people can move from first impression to useful action without losing
-                    trust.
+                    The structure stays controlled on purpose: essential care first, specialist
+                    services second, and enough breathing room for each decision to feel simple.
                   </p>
                   <div className="services-pill-row">
                     <span>Urgent repeats</span>

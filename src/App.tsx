@@ -57,16 +57,16 @@ const navItems: NavItem[] = [
 ];
 
 const heroHighlights = [
-  "Private prescriptions and repeat support",
+  "NHS and private prescription support",
   "Travel vaccines, seasonal jabs and prevention",
-  "Blood testing, wellness reviews and medication guidance",
+  "Blood testing, medication reviews and pharmacist guidance",
   "THC- and CBD-based medical cannabis consultations where clinically appropriate",
 ];
 
 const heroStats: HeroStat[] = [
   {
-    value: "Open late",
-    label: "for urgent repeats, same-day questions and practical reassurance",
+    value: "NHS + private",
+    label: "clear pathways for everyday pharmacy needs and higher-touch care",
   },
   {
     value: "THC + CBD",
@@ -119,21 +119,21 @@ const serviceCards: ServiceCard[] = [
 
 const serviceGroups: ServiceGroup[] = [
   {
-    eyebrow: "Medicines & access",
-    title: "Keep everyday pharmacy needs moving without friction.",
-    text: "This lane is about confidence and speed: prescriptions, medication questions and access to same-day support.",
+    eyebrow: "Prescriptions & advice",
+    title: "Keep repeat medicines, urgent requests and pharmacist answers moving.",
+    text: "This lane is built around the kind of practical support people expect from a modern UK pharmacy: clear dispensing, medication guidance and same-day access.",
     services: [serviceCards[0], serviceCards[1]],
   },
   {
-    eyebrow: "Prevention & screening",
-    title: "Use the pharmacy as a place for prevention, not just collection.",
-    text: "Vaccines and blood testing sit together here because they both help patients act earlier, not later.",
+    eyebrow: "Prevention & checks",
+    title: "Use the pharmacy for prevention, not only for collection.",
+    text: "Vaccines and blood testing sit together because they help people act early, stay informed and treat the pharmacy as an ongoing health touchpoint.",
     services: [serviceCards[2], serviceCards[3]],
   },
   {
-    eyebrow: "Specialist & aftercare",
-    title: "Higher-touch care still needs a calm, readable interface.",
-    text: "Medical cannabis and delivery support work best when the information feels structured, warm and clinically grounded.",
+    eyebrow: "Specialist & follow-up",
+    title: "Specialist treatment should still feel clear, calm and familiar.",
+    text: "Medical cannabis and aftercare work best when the interface feels regulated, grounded and easy to return to for repeats, updates and delivery support.",
     services: [serviceCards[4], serviceCards[5]],
   },
 ];
@@ -215,16 +215,16 @@ const faqs: Faq[] = [
 
 const floatingCards = [
   {
-    title: "Night-owl support",
-    body: "Urgent repeats, calm answers and fast triage without the frantic energy.",
+    title: "NHS-ready support",
+    body: "Prescription requests, repeat medicines and practical pharmacist guidance in one place.",
   },
   {
-    title: "Cannabis, clarified",
-    body: "A specialist pathway for THC and CBD care that feels informed, not salesy.",
+    title: "Specialist cannabis care",
+    body: "THC and CBD pathways are explained with clinical clarity, discretion and follow-up.",
   },
   {
-    title: "Health library",
-    body: "Readable guidance on prevention, medicines, travel health and blood tests.",
+    title: "Health information hub",
+    body: "Plain-English advice on medicines, prevention, travel health and blood testing.",
   },
 ];
 
@@ -275,9 +275,11 @@ function FloatingBackground({
 function ScrollScene({
   id,
   panel,
+  drift = "left",
 }: {
   id: string;
   panel: ReactNode;
+  drift?: "left" | "right";
 }) {
   const ref = useRef<HTMLElement | null>(null);
   const reducedMotion = useReducedMotion();
@@ -292,13 +294,26 @@ function ScrollScene({
     [0, 0.35, 1, 1, 0.35, 0],
   );
   const y = useTransform(scrollYProgress, [0, 0.18, 0.5, 0.82, 1], [90, 24, 0, -26, -90]);
-  const scale = useTransform(scrollYProgress, [0, 0.22, 0.5, 0.82, 1], [0.965, 0.985, 1, 0.985, 0.965]);
+  const xOffset = drift === "right" ? 42 : -42;
+  const x = useTransform(scrollYProgress, [0, 0.2, 0.5, 0.82, 1], [xOffset, 10, 0, -10, -xOffset]);
+  const scale = useTransform(scrollYProgress, [0, 0.22, 0.5, 0.82, 1], [0.96, 0.985, 1, 0.985, 0.96]);
+  const clipPath = useTransform(
+    scrollYProgress,
+    [0, 0.16, 0.5, 0.84, 1],
+    [
+      "inset(10% 6% 10% 6% round 36px)",
+      "inset(2% 1.5% 2% 1.5% round 36px)",
+      "inset(0% 0% 0% 0% round 36px)",
+      "inset(2% 1.5% 2% 1.5% round 36px)",
+      "inset(10% 6% 10% 6% round 36px)",
+    ],
+  );
 
   return (
     <section id={id} ref={ref} className="scene">
       <motion.div
         className="scene__frame"
-        style={reducedMotion ? undefined : { opacity, y, scale }}
+        style={reducedMotion ? undefined : { opacity, x, y, scale, clipPath }}
       >
         {panel}
       </motion.div>
@@ -336,9 +351,14 @@ function App() {
             </a>
           ))}
         </nav>
-        <a className="header-cta" href="#contact">
-          Request a callback
-        </a>
+        <div className="header-actions">
+          <button className="auth-button" type="button">
+            Sign in / Sign up
+          </button>
+          <a className="header-cta" href="#contact">
+            Request a callback
+          </a>
+        </div>
       </header>
 
       <main id="top" className="story-flow">
@@ -346,15 +366,15 @@ function App() {
           <FloatingBackground one={auraOneY} two={auraTwoY} />
           <div className="hero-grid">
             <motion.div className="hero-copy" style={{ y: heroCopyY }}>
-              <SectionTag>Private pharmacy, wellness and medical guidance</SectionTag>
+              <SectionTag>UK pharmacy, wellness and medical guidance</SectionTag>
               <p className="hero-kicker">
-                Clean enough to feel premium. Quirky enough to feel human.
+                Designed around the clarity people expect from a modern UK pharmacy.
               </p>
-              <h1>Elegant care, practical next steps, and a homepage with real rhythm.</h1>
+              <h1>A calm, modern front door for prescriptions, advice and specialist care.</h1>
               <p className="hero-copy__lead">
-                Built to explain what the pharmacy does clearly: prescriptions, consultations,
-                vaccines, blood testing, delivery support, wellness services and specialist
-                medical cannabis pathways covering both THC and CBD-based care where appropriate.
+                Shaylen Pharmacy brings together NHS and private prescription support,
+                consultations, vaccines, blood testing, delivery, everyday health advice and
+                regulated medical cannabis care so patients can find the right next step quickly.
               </p>
               <div className="hero-actions">
                 <a className="button button--primary" href="#services">
@@ -364,6 +384,10 @@ function App() {
                   Understand cannabis care
                 </a>
               </div>
+              <p className="hero-account-note">
+                Sign in / sign up is ready as a future patient account entry point for
+                prescriptions, repeats and secure personal details.
+              </p>
               <ul className="hero-list">
                 {heroHighlights.map((highlight) => (
                   <li key={highlight}>{highlight}</li>
@@ -374,12 +398,15 @@ function App() {
             <motion.div className="hero-stage" style={{ y: heroCardsY }}>
               <div className="hero-stage__panel">
                 <div className="hero-stage__eyebrow">
-                  <span>Open late</span>
+                  <span>UK pharmacy care</span>
                   <span>Clinic + delivery</span>
                 </div>
                 <div className="hero-stage__note">
-                  <span>Tonight's brief</span>
-                  <p>Reassuring answers first. Elegant information design second. Friction last.</p>
+                  <span>What to expect</span>
+                  <p>
+                    Clear advice, careful checks and a simple route into prescriptions,
+                    consultations and follow-up support.
+                  </p>
                 </div>
                 <div className="hero-stage__stats">
                   {heroStats.map((stat) => (
@@ -437,11 +464,12 @@ function App() {
 
         <ScrollScene
           id="services"
+          drift="left"
           panel={
             <Panel
-              tag="What the pharmacy offers"
-              title="The service mix is broad, but the page flow makes it feel calm and easy to scan."
-              description="Instead of treating every offer the same way, this section introduces the essentials first, then lets the more specialist pathways unfold naturally."
+              tag="Services"
+              title="Everyday pharmacy support, prevention and specialist care in one place."
+              description="From NHS and private prescriptions to vaccines, blood tests and follow-up delivery support, the service range is organised so patients can find the right route quickly."
             >
               <div className="services-editorial">
                 <motion.div
@@ -452,8 +480,9 @@ function App() {
                   transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                 >
                   <p className="services-summary__lead">
-                    The section is now organised in lanes, not scattered boxes, so the content
-                    reads more like a care pathway and less like a grid of unrelated promos.
+                    Choose the type of support you need today, whether that is collecting repeat
+                    medicines, arranging a consultation, staying ahead with prevention or exploring
+                    more specialist treatment pathways.
                   </p>
                   <div className="services-pill-row">
                     <span>Urgent repeats</span>
@@ -507,11 +536,12 @@ function App() {
 
         <ScrollScene
           id="cannabis"
+          drift="right"
           panel={
             <Panel
               tag="Medical cannabis"
-              title="THC and CBD pathways are framed as thoughtful clinical care, not as something impulsive or vague."
-              description="This section uses a more focused tone and cleaner pacing so the page naturally slows down before discussing eligibility, follow-up and patient expectations."
+              title="THC and CBD care is explained with clarity, discretion and proper clinical oversight."
+              description="Patients can understand eligibility, assessment and follow-up without the tone drifting into lifestyle marketing or vague promises."
               accent="bright"
             >
               <div className="cannabis-layout">
@@ -525,9 +555,9 @@ function App() {
                   <SectionTag>How the pathway is framed</SectionTag>
                   <h3>Education first, suitability second, prescribing only when appropriate.</h3>
                   <p>
-                    The site makes room for symptom history, previous treatments, goals of care and
-                    realistic outcomes. That helps keep the tone specialist and medically credible,
-                    even while the overall design stays warm and inviting.
+                    Patients are guided through symptom history, previous treatments, goals of care
+                    and realistic outcomes so the pathway feels specialist, regulated and easy to
+                    understand before any clinical decision is made.
                   </p>
                   <ul className="check-list">
                     {cannabisPoints.map((item) => (
@@ -546,9 +576,9 @@ function App() {
                   >
                     <h3>What patients need to understand quickly</h3>
                     <p>
-                      This part of the homepage clarifies that CBD-dominant, balanced and THC-led
-                      approaches may all exist within a regulated framework, but all require proper
-                      assessment, monitoring and expectations setting.
+                      CBD-dominant, balanced and THC-led approaches may all exist within a
+                      regulated framework, but each route still depends on proper assessment,
+                      monitoring and expectations setting.
                     </p>
                     <div className="pill-row">
                       <span>CBD-focused options</span>
@@ -566,8 +596,8 @@ function App() {
                   >
                     <span className="micro-label">Quiet reassurance</span>
                     <p>
-                      The copy explicitly avoids recreational cues and instead highlights safety,
-                      legality, specialist oversight and ongoing review.
+                      Safety, legality, specialist oversight and ongoing review are made visible
+                      throughout the pathway so patients know exactly how the service is framed.
                     </p>
                   </motion.article>
                 </div>
@@ -578,11 +608,12 @@ function App() {
 
         <ScrollScene
           id="info"
+          drift="left"
           panel={
             <Panel
               tag="Medical information"
-              title="Patients should leave the site more informed, more confident and less overwhelmed."
-              description="This section leans into elegant editorial structure so the information side of the website feels genuinely useful, not like filler underneath the service cards."
+              title="Reliable health information helps patients decide what to do next."
+              description="Use the pharmacy as a practical first stop for everyday advice, medicine guidance, prevention support and better questions ahead of treatment."
               accent="soft"
             >
               <div className="info-mosaic">
@@ -607,11 +638,12 @@ function App() {
 
         <ScrollScene
           id="journey"
+          drift="right"
           panel={
             <Panel
               tag="How it works"
-              title="The patient journey feels simple because the structure does the hard work behind the scenes."
-              description="Each step is visually connected, which gives the page a sense of flow while still keeping the content clear and genuinely usable."
+              title="From first question to follow-up, the process stays clear."
+              description="A simple patient journey helps people understand what happens before, during and after care."
             >
               <div className="journey-rail">
                 {pathwaySteps.map((step) => (
@@ -635,19 +667,20 @@ function App() {
 
         <ScrollScene
           id="contact"
+          drift="left"
           panel={
             <Panel
               tag="Trust, access and FAQs"
-              title="The close should feel clear and composed: who to contact, what to expect and where to ask the next question."
-              description="The last section keeps the same elegant tone, but becomes a little more practical so the page finishes with confidence rather than decoration."
+              title="Speak to the team, plan the next step and find the answers you need."
+              description="Contact details and common questions sit together so the page ends with clarity, trust and a practical route forward."
               accent="bright"
             >
               <div className="contact-layout">
                 <div className="contact-card contact-card--feature">
                   <h3>Get in touch</h3>
                   <p className="contact-card__intro">
-                    A refined contact panel with enough warmth to feel human and enough structure
-                    to feel dependable.
+                    Whether you need a repeat, advice on symptoms or a specialist appointment, the
+                    team can help direct you to the most suitable service.
                   </p>
                   <dl>
                     <div>
@@ -684,9 +717,9 @@ function App() {
 
       <footer className="site-footer">
         <p>
-          This concept site is designed for a UK-style pharmacy and wellness service. Medical
-          information supports informed decisions but does not replace pharmacist or prescriber
-          advice. For urgent or emergency symptoms, seek immediate local emergency care.
+          This site is designed for a UK pharmacy and wellness service. Medical information
+          supports informed decisions but does not replace pharmacist or prescriber advice. For
+          urgent or emergency symptoms, seek immediate local emergency care.
         </p>
       </footer>
     </div>

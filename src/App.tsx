@@ -1,4 +1,4 @@
-import { useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
   motion,
   useMotionValueEvent,
@@ -292,11 +292,68 @@ function ScrollScene({
   density?: "standard" | "compact" | "tight" | "short";
 }) {
   const ref = useRef<HTMLElement | null>(null);
+  const frameRef = useRef<HTMLDivElement | null>(null);
   const reducedMotion = useReducedMotion();
+  const [sceneMinHeight, setSceneMinHeight] = useState<number | null>(null);
+  const [isStackedLayout, setIsStackedLayout] = useState(false);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
   });
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return undefined;
+    }
+
+    const mediaQuery = window.matchMedia("(max-width: 860px)");
+    const syncLayout = () => setIsStackedLayout(mediaQuery.matches);
+
+    syncLayout();
+    mediaQuery.addEventListener("change", syncLayout);
+
+    return () => {
+      mediaQuery.removeEventListener("change", syncLayout);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return undefined;
+    }
+
+    if (isStackedLayout) {
+      setSceneMinHeight(null);
+      return undefined;
+    }
+
+    const node = frameRef.current;
+    if (!node) {
+      return undefined;
+    }
+
+    const densityOffsets = {
+      standard: 260,
+      compact: 210,
+      tight: 170,
+      short: 130,
+    } as const;
+
+    const measure = () => {
+      setSceneMinHeight(node.offsetHeight + densityOffsets[density]);
+    };
+
+    measure();
+
+    const observer = new ResizeObserver(measure);
+    observer.observe(node);
+    window.addEventListener("resize", measure);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", measure);
+    };
+  }, [density, isStackedLayout]);
 
   const opacity = useTransform(
     scrollYProgress,
@@ -320,8 +377,14 @@ function ScrollScene({
   );
 
   return (
-    <section id={id} ref={ref} className={`scene scene--${density}`}>
+    <section
+      id={id}
+      ref={ref}
+      className={`scene scene--${density}`}
+      style={sceneMinHeight ? { minHeight: sceneMinHeight } : undefined}
+    >
       <motion.div
+        ref={frameRef}
         className="scene__frame"
         style={reducedMotion ? undefined : { opacity, x, y, scale, clipPath }}
       >

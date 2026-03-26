@@ -1,6 +1,7 @@
-import { useRef, type ReactNode } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import {
   motion,
+  useMotionValueEvent,
   useReducedMotion,
   useScroll,
   useTransform,
@@ -332,10 +333,16 @@ function ScrollScene({
 
 function App() {
   const reducedMotion = useReducedMotion();
+  const [headerScrolled, setHeaderScrolled] = useState(false);
+  const { scrollY } = useScroll();
   const heroRef = useRef<HTMLElement | null>(null);
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ["start start", "end start"],
+  });
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    setHeaderScrolled(latest > 36);
   });
 
   const auraOneY = useTransform(scrollYProgress, [0, 1], [0, reducedMotion ? 0 : 120]);
@@ -346,7 +353,10 @@ function App() {
 
   return (
     <div className="site-shell">
-      <header className="site-header">
+      <motion.header
+        layout
+        className={`site-header ${headerScrolled ? "site-header--scrolled" : ""}`}
+      >
         <a className="brand" href="#top">
           <span className="brand__mark">S</span>
           <span className="brand__text">
@@ -356,7 +366,7 @@ function App() {
         </a>
         <nav aria-label="Primary">
           {navItems.map((item) => (
-            <a key={item.href} href={item.href}>
+            <a key={item.href} className="nav-link" href={item.href}>
               {item.label}
             </a>
           ))}
@@ -369,7 +379,7 @@ function App() {
             Request a callback
           </a>
         </div>
-      </header>
+      </motion.header>
 
       <main id="top" className="story-flow">
         <section ref={heroRef} className="hero">

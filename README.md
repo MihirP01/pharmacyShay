@@ -1,4 +1,4 @@
-# Shaylen Pharmacy
+# Cannabis Clinic UK Website
 
 A Vite + React pharmacy website concept built for a modern private pharmacy and wellness brand. The site combines an elegant editorial layout with smooth Framer Motion section transitions and covers:
 
